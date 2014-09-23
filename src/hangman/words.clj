@@ -17,7 +17,7 @@
             [incanter.charts :as charts]
             [clojure.java.io :as jio]))
 
-;; For Hangman, we need a list of words to guess. 
+;; For Hangman, we need a list of words to guess.
 
 ;;;; STEP 1: Where is the list of words located
 
@@ -28,6 +28,8 @@
 (def words-local
   (jio/resource "hangman/words.zip"))
 
+;; Preload the word list in a line sequence
+(def words-local-seq (line-seq (util/unzip-from-url words-local)))
 ;;;; STEP 2: Get list of words
 
 (comment
@@ -37,30 +39,31 @@
 
   ;; whole word list as a single string
   (slurp (util/unzip-from-url words-local))
-  
+
   ;; count number of characters
   (let [words (slurp (util/unzip-from-url words-local))]
     (count words))
-  
-  ;; char seq on word list  
+
+  ;; char seq on word list
   (seq (slurp (util/unzip-from-url words-local)))
 
   ;; NOTE: file contains one word per line, we can separate
   ;;       words by separating lines
-  
-  ;; line seq on word list  
+
+  ;; line seq on word list
   (line-seq (util/unzip-from-url words-local))
 
   ;; count number of words
   (let [words (line-seq (util/unzip-from-url words-local))]
     (count words))
-  
+
   )
 
 (defn- get-words
   "Returns seq of words."
-  [url]
-  (line-seq (util/unzip-from-url url)))
+  ([] words-local-seq)
+  ([url] (line-seq (util/unzip-from-url url)))
+)
 
 ;; NOTE: defn- defines private function. Private functions cannot
 ;;       be called from other namespaces.
@@ -71,6 +74,8 @@
 
   ;; seq of words
   (get-words words-local)
+
+  (get-words)
 
   ;; number of words
   (count (get-words words-local))
@@ -100,7 +105,7 @@
   (let [words (get-words words-local)
         keep? #(< 4 (count %) 8)]
     (filter keep? words))
-  
+
   )
 
 (defn- trim-words
@@ -155,7 +160,6 @@
 
   ;; get random word
   (rand-nth (get-words words-local))
-
   )
 
 ;;;; Public API
@@ -168,7 +172,11 @@
   ([]
      (get-random-word [5 7]))
   ([range]
-     (get-random-word range words-local))
+     ;;(rand-nth (seq (trim-words (get-words) [5 7])))
+     (-> (get-words)
+         (trim-words range)
+         seq
+         rand-nth))
   ([range url]
      (-> url
          get-words
