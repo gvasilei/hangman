@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"}
   ;; every library used in hangman must be declared here, so
   ;; that leiningen will find it
-  :dependencies [[org.clojure/clojure "1.3.0"]
+  :dependencies [[org.clojure/clojure "1.6.0"]
                  [incanter "1.3.0-20120120.004852-2"]
                  [seesaw "1.3.0"]]
   :checksum-deps false
