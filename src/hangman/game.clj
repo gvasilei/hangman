@@ -50,7 +50,7 @@
 
 (defn lost?
   "Returns true if game is lost. Returns false otherwise."
-  [game] 
+  [game]
   (let [wrong-guesses (solver/wrong-guesses (:word game)
                                             (:guesses game))]
     (> (count wrong-guesses) max-wrong-guesses)))
@@ -77,7 +77,7 @@
 
   ;; and is it over?
   (game-over? {:word "hangman" :guesses [\h \a \n \g \m]})
-  
+
   )
 
 ;;;; STEP 3: Create function for adding next guess
@@ -98,7 +98,7 @@
   (let [game {:word "hangman", :guesses [\h \a \c]}]
     (update-in game [:guesses] conj \g))
 
-  ;; NOTE: for more map manipluation functions, see
+  ;; NOTE: for more map manipulation functions, see
   ;;       assoc, assoc-in, dissoc and merge
 
   )
