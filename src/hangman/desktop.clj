@@ -54,6 +54,13 @@
 
 ;;;; STEP 2: update game state
 
+(defn- textualize
+  "Returns the number of guesses left in text form"
+  [guesses]
+    (["no guesses" "one guess"] guesses)
+  )
+
+
 (defn get-wrong-guesses
   "Returns string informing about wrong guesses."
   [info]
@@ -69,7 +76,8 @@
        )
        ;; also print number of wrong guesses left
        (when-not (= :lost (:state info))
-         (str " (" (:wrong-guesses-left info) " left)"))))
+         (let [wrong-guesses (:wrong-guesses-left info)]
+         (str " (" (if (<= wrong-guesses 1) (textualize wrong-guesses) wrong-guesses) " left)")))))
 
 (defn update-state!
   "Updates game UI, to reflect a current state."
