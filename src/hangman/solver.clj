@@ -25,7 +25,7 @@
 
   ;; go through the word and check if characters are equal
   (map #(= % \a) "hangman")
-  
+
   ;; we can use set to check for equality
   (map #{\a} "hangman")
 
@@ -45,7 +45,7 @@
 
   ;; convert seq of chars back to string
   (str \h \a \n \g \m \a \n)
-  
+
   )
 
 (defn match
@@ -91,10 +91,10 @@
   )
 
 (defn wrong-guesses
-  "Returns set of wrong guesses for a given word.
-  Returns empty set if there are no wrong guesses."
+  "Returns sequence of wrong guesses for a given word.
+  Returns empty sequence if there are no wrong guesses."
   [word guesses]
-  (set (remove (set word) guesses)))
+  (remove (set word) guesses))
 
 (comment
 
@@ -104,7 +104,7 @@
   (wrong-guesses nil [\h])
 
   (wrong-guesses "hangman" nil)
-  
+
   )
 
 ;;;; STEP 3: check if game is over
