@@ -59,11 +59,14 @@
   [info]
   (str (if (empty? (:wrong-guesses info))
          "no wrong guesses"
-         ;; also transform to uppercase and sort
-         (cs/join ", " (->> info
+         ;; Transform to uppercase and sort. when writing wrong guesses,
+         ;; write "A, B and C", instead of "A, B, C".
+         ;; TODO - Improve this.
+         (cs/reverse (cs/replace-first (cs/reverse (cs/join ", " (->> info
                             :wrong-guesses
                             (map cs/upper-case)
-                            sort)))
+                            sort))) #"," "dna "))
+       )
        ;; also print number of wrong guesses left
        (when-not (= :lost (:state info))
          (str " (" (:wrong-guesses-left info) " left)"))))
@@ -158,5 +161,5 @@
 
   ;; WARNING: swank will terminate after game window is closed!
   (start-game!)
-  
+
   )
