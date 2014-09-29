@@ -12,7 +12,8 @@
 
 (ns hangman.core
   "Core Hangman functions."
-  (:require [hangman.game :as game]))
+  (:require [hangman.game :as game]
+            [hangman.stats :as stats]))
 
 ;;;; STEP 1: game state
 
@@ -42,6 +43,14 @@
 ;; game state is stored in this var
 (def current-game (atom (game/create-game)))
 
+
+(defn- update-stats
+  [game]
+  (when (game/game-over? game)
+    (when (game/won? game)
+      (stats/update_wins))
+    (stats/update_games)))
+
 ;;;; Public API
 
 (defn get-game-info
@@ -65,6 +74,7 @@
   Returns info for player."
   [guess]
   (swap! current-game game/add-next-guess guess)
+  (update-stats @current-game)
   (get-game-info))
 
 ;; NOTE: Function name should end with bang (!), if it does change
@@ -97,5 +107,5 @@
   (guess! \n)
   (guess! \g)
   (guess! \m)
-  
+
   )

@@ -13,7 +13,8 @@
 (ns hangman.game
   "Game mechanics."
   (:require [hangman.words :as words]
-            [hangman.solver :as solver]))
+            [hangman.solver :as solver]
+            [hangman.stats :as stats]))
 
 ;;;; STEP 1: create new game
 
@@ -26,7 +27,6 @@
   ;; example of game state
   {:word "hangman"
    :guesses [\h \a \c]}
-
   )
 
 (defn create-game
@@ -130,7 +130,9 @@
      :state (cond
              (won? game) :won
              (lost? game) :lost
-             :else :ready)}))
+             :else :ready)
+     :games (stats/get_games)
+     :wins (stats/get_wins)}))
 
 (comment
 
