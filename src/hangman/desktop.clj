@@ -83,10 +83,12 @@
   "Updates game UI, to reflect a current state."
   []
   ;; find widgets and collect information about current game
-  (let [guess-widget (ss/select form [:#guess])
-        new-game-widget (ss/select form [:#new-game])
-        game-state-widget (ss/select form [:#game-state])
-        info (hangman/get-game-info)]
+  (let [guess-widget        (ss/select form [:#guess])
+        new-game-widget     (ss/select form [:#new-game])
+        game-state-widget   (ss/select form [:#game-state])
+        games-played-widget (ss/select form [:#games-played])
+        games-won-widget    (ss/select form [:#games-won])
+        info                (hangman/get-game-info)]
     ;; print word to guess
     (ss/value! (ss/select form [:#word])
                (cs/upper-case (cs/join " " (seq (:hint info)))))
@@ -107,7 +109,11 @@
       (do
         (ss/value! game-state-widget "Make your guess.")
         (ss/config! guess-widget :enabled? true)
-        (.requestFocus (ss/to-widget guess-widget))))))
+        (.requestFocus (ss/to-widget guess-widget))))
+    ;; update stats
+    (ss/value! games-played-widget (str "Games played : " (:games info)))
+    (ss/value! games-won-widget (str "Games won : " (:wins info)))
+    ))
 
 ;;;; STEP 3: Define form
 
@@ -152,7 +158,17 @@
             ;; credits
             (ss/label :text "https://github.com/wagjo/hangman"
                       :font "ARIAL-16"
-                      :halign :right)])))
+                      :halign :right)
+            ;; statistics
+            (ss/horizontal-panel
+             :items [(ss/label :id :games-played
+                               :text "Games played: 0"
+                               :font "ARIAL-16")
+                     [:fill-h 20]
+                     (ss/label :id :games-won
+                               :text "Games won: 0"
+                               :font "ARIAL-16")
+                     [:fill-h 20]])])))
 
 ;; main desktop functions
 
