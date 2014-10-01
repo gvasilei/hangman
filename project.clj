@@ -7,7 +7,8 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [incanter "1.3.0-20120120.004852-2"]
                  [seesaw "1.3.0"]
-                 [compojure "1.1.9"]]
+                 [compojure "1.1.9"]
+                 [cheshire "5.3.1"]]
   :plugins [[lein-ring "0.8.11"]]
   :ring {:handler hangman.web/app}
   :profiles {:dev {:dependencies [[javax.servlet/servlet-api "2.5"] [ring-mock "0.1.5"]]}}
